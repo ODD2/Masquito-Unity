@@ -95,19 +95,35 @@ public class Masquito : MonoBehaviour
 
         transform.position = new Vector3((float)x,(float)y, transform.position.z);
 
-        if (direction > PI/2 && direction <  1.5*PI)
+        if (direction > PI/2.0 && direction <  1.5*PI)
         {
             transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
-            transform.eulerAngles = new Vector3(0, 0, (float)((direction * 180 / PI)-PI));
+            //transform.eulerAngles = new Vector3(0, 0, (float)((direction * 180 / PI)-PI));
+            transform.eulerAngles = new Vector3(0, 0, 0);
         }
         else
         {
             transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
-            transform.eulerAngles = new Vector3(0, 0, (float)(direction * 180 / PI));
+            // transform.eulerAngles = new Vector3(0, 0, (float)(direction * 180 / PI));
+            transform.eulerAngles = new Vector3(0, 0, 0);
         }
 
-
-        if (AccuTime >= moveDuration )
+        if (Dangerous3())
+        {
+            if (!lastDangerous)
+            {
+                GetComponent<SpriteRenderer>().sprite = spriteDangerous;
+                ChangeToDangerous3();
+            }
+            lastDangerous = true;
+        }
+        else if (lastDangerous)
+        {
+            lastDangerous = false;
+            GetComponent<SpriteRenderer>().sprite = spriteOrigin;
+            ChangeToNormal();
+        }
+        else  if (AccuTime >= moveDuration )
         {
             //Arrange New Behavior
             AccuTime = 0;
@@ -115,21 +131,6 @@ public class Masquito : MonoBehaviour
             {  //Too far away from the center point
                 //Try to stay close to the center point
                 GoCenterBehavior();
-            }
-            else if (Dangerous3())
-            {
-                if (!lastDangerous)
-                {
-                    GetComponent<SpriteRenderer>().sprite = spriteDangerous;
-                    ChangeToDangerous3();
-                }
-                lastDangerous = true;
-            }
-            else if (lastDangerous)
-            {
-                lastDangerous = false;
-                GetComponent<SpriteRenderer>().sprite = spriteOrigin;
-                ChangeToNormal();
             }
             else
             {
@@ -214,7 +215,6 @@ public class Masquito : MonoBehaviour
     void ChangeToNormal()
     {
         speed /= 1.3f;
-        NormalBehavior();
         m_animator.SetBool("check", false);
     }
 
@@ -227,7 +227,6 @@ public class Masquito : MonoBehaviour
         deltadir = Vector2.SignedAngle(dir, transToCursor + dir) / 180 * PI / 30;
         deltadeltadir = 0;
         m_animator.SetBool("check", true);
-        
     }
 
     bool Dangerous3()
