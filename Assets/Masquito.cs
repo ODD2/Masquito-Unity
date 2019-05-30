@@ -53,8 +53,8 @@ public class Masquito : MonoBehaviour
     public bool lastDangerous;
     public Sprite spriteOrigin;
     public Sprite spriteDangerous;
-
-
+    public double maxForce = 10;
+    public double baseForce = 0.5;
     //Animation Dependencies
     Animator m_animator;
 
@@ -108,13 +108,17 @@ public class Masquito : MonoBehaviour
             transform.eulerAngles = new Vector3(0, 0, 0);
         }
 
-        if (Dangerous3())
+        if (isDangerous3())
         {
             if (!lastDangerous)
             {
-                GetComponent<SpriteRenderer>().sprite = spriteDangerous;
-                ChangeToDangerous3();
+                //GetComponent<SpriteRenderer>().sprite = spriteDangerous;
+                m_animator.SetBool("check", true);
+                speed *= 1.3f;
+                //ChangeToDangerous3();
             }
+            //weeds();
+            dangerous3();
             lastDangerous = true;
         }
         else if (lastDangerous)
@@ -229,7 +233,7 @@ public class Masquito : MonoBehaviour
         m_animator.SetBool("check", true);
     }
 
-    bool Dangerous3()
+    bool isDangerous3()
     {
         cursor = Input.mousePosition;
         cursor.z = 20;
@@ -240,11 +244,25 @@ public class Masquito : MonoBehaviour
         double lastDistance = Math.Sqrt(Math.Pow(lastCursorPosition.x - pos.x, 2) + Math.Pow((lastCursorPosition.y - pos.y), 2));
         lastCursorPosition = cursor;
 
-        //if (distance < dangerous3Position && distance < lastDistance)
-        //    return true;
-        if (distance < dangerous3Position)
+        if (distance < dangerous3Position && distance < lastDistance)
             return true;
-
+   
         return false;
+    }
+
+    void dangerous3()
+    {
+        Vector2 transToCursor = new Vector2(transform.position.x - cursor.x, transform.position.y - cursor.y);
+        Vector2 dir = new Vector2(Mathf.Cos((float)direction), Mathf.Sin((float)direction));
+        double n = dangerous3Position - transToCursor.magnitude;
+        direction = Vector2.SignedAngle(new Vector2(1, 0), dir + transToCursor * (float)n) / 180 * PI;
+        if (speed < 2) speed = 2;
+        deltadir = 0;
+        deltadeltadir = 0;
+    }
+
+    void weeds()
+    {
+        deltadir = UnityEngine.Random.Range(0.3f, 1f);
     }
 }

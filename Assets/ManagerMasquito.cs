@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ManagerMasquito : MonoBehaviour
 {
-    const int MaxMasquito =50;
+    const int MaxMasquito =20;
     private int curMasquito = 0;
     private GameObject[] Masquitos = new GameObject[MaxMasquito];
     public GameObject MasquitoExample;
