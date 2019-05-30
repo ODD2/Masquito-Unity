@@ -94,8 +94,17 @@ public class Masquito : MonoBehaviour
         x += Mathf.Cos((float)direction) * speed * Time.deltaTime;
 
         transform.position = new Vector3((float)x,(float)y, transform.position.z);
-        transform.eulerAngles = new Vector3(0, 0, (float)(direction * 180 / PI));
 
+        if (direction > PI/2 && direction <  1.5*PI)
+        {
+            transform.localScale = new Vector3(1, transform.localScale.y, transform.localScale.z);
+            transform.eulerAngles = new Vector3(0, 0, (float)((direction * 180 / PI)-PI));
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1, transform.localScale.y, transform.localScale.z);
+            transform.eulerAngles = new Vector3(0, 0, (float)(direction * 180 / PI));
+        }
 
 
         if (AccuTime >= moveDuration )
