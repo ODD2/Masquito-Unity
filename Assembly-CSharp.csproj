@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Assets\Cursor.cs" />
     <Compile Include="Assets\GlobalVars.cs" />
+    <Compile Include="Assets\ManagerMasquito.cs" />
     <Compile Include="Assets\Masquito.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/UnityProjects/MultiMedia/MultiMedia1/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
