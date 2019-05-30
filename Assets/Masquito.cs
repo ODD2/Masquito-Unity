@@ -55,6 +55,10 @@ public class Masquito : MonoBehaviour
     public Sprite spriteDangerous;
 
 
+    //Animation Dependencies
+    Animator m_animator;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +67,9 @@ public class Masquito : MonoBehaviour
         newSpeed = 0.1f;
         deltaSpeed = newSpeed - speed;
         AccuTime = 0;
+        //Animation Setup
+        m_animator = gameObject.GetComponent<Animator>();
+        m_animator.SetBool("check", false);
     }
 
     // Update is called once per frame
@@ -199,6 +206,7 @@ public class Masquito : MonoBehaviour
     {
         speed /= 1.3f;
         NormalBehavior();
+        m_animator.SetBool("check", false);
     }
 
     void ChangeToDangerous3()
@@ -209,6 +217,8 @@ public class Masquito : MonoBehaviour
         Vector2 dir = new Vector2(Mathf.Cos((float)direction), Mathf.Sin((float)direction));
         deltadir = Vector2.SignedAngle(dir, transToCursor + dir) / 180 * PI / 30;
         deltadeltadir = 0;
+        m_animator.SetBool("check", true);
+        
     }
 
     bool Dangerous3()
